@@ -8,16 +8,26 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.function.BiFunction;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BonusServiceTest {
+
+    private ReajusteService service;
 
     @Test
     void bonusDeveriaSerZeroParaFuncionarioComSalarioMuitoAlto(){
         BonusService service = new BonusService();
-        BigDecimal bonus = service.calcularBonus(new Funcionario("Raphael", LocalDate.now(),new BigDecimal("25000")));
+        //assertThrows(IllegalArgumentException.class,
+         //       () -> service.calcularBonus(new Funcionario("Raphael", LocalDate.now(),new BigDecimal("25000"))));
 
-        assertEquals(BigDecimal.ZERO,bonus);
+        // segunda maneira
+        try{
+            service.calcularBonus(new Funcionario("Raphael", LocalDate.now(),new BigDecimal("25000")));
+            fail("Não deu a exception");
+        }catch(Exception e){
+            assertEquals("Funcionario com salário maior do que R$1.000,0 não pode receber bônus", e.getMessage());
+        }
+
     }
 
     @Test
